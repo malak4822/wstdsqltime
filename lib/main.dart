@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -33,15 +32,18 @@ class _MyHomePageState extends State<MyHomePage>
     with SingleTickerProviderStateMixin {
   double counter = 0;
   double inHours = 0;
-
+  double sliderMinutes = 0;
   double contWidth = 0;
   bool showSwitchCard = false;
+  double buttOpacity = 0;
+  bool hasEndings = true;
 
   void loadBool() async {
     var prefs = await SharedPreferences.getInstance();
     setState(() {
       counter = prefs.getDouble('wastedTime') ?? 0;
     });
+    timeInHours();
   }
 
   void resetCounter() async {
@@ -81,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage>
   @override
   void initState() {
     loadBool();
-    timeInHours();
+
     super.initState();
   }
 
@@ -95,12 +97,14 @@ class _MyHomePageState extends State<MyHomePage>
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 shape: const CircleBorder(),
-                padding: const EdgeInsets.all(60),
+                padding: const EdgeInsets.all(70),
               ),
               onPressed: resetCounter,
               child: Text("Reset time",
                   style: GoogleFonts.overpass(
-                      color: blackGucci, fontWeight: FontWeight.bold))),
+                      color: blackGucci,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 30))),
         ]),
       ),
       appBar: AppBar(
@@ -136,12 +140,75 @@ class _MyHomePageState extends State<MyHomePage>
                       curve: Curves.easeInOutCirc,
                       duration: const Duration(milliseconds: 400),
                       alignment: Alignment.center,
-                      child: Visibility(
-                          visible: showSwitchCard,
-                          child: Stack(children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: InkWell(
+                      child: AnimatedOpacity(
+                          curve: Curves.easeInOutCirc,
+                          opacity: showSwitchCard ? 1 : buttOpacity,
+                          duration: const Duration(milliseconds: 400),
+                          child: Row(children: [
+                            Expanded(
+                                flex: 3,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                        flex: 2,
+                                        child: Slider(
+                                          activeColor: Colors.white,
+                                          thumbColor: Colors.black,
+                                          inactiveColor: Colors.white30,
+                                          value: sliderMinutes,
+                                          onChanged: (double value) {
+                                            setState(() {
+                                              sliderMinutes = value;
+                                              hasEndings = true;
+                                              if (sliderMinutes < 0.3) {
+                                                if (sliderMinutes > 0.2) {
+                                                  hasEndings = false;
+                                                  sliderMinutes = 0.25;
+                                                }
+                                              }
+                                              if (sliderMinutes < 0.15) {
+                                                if (sliderMinutes > 0.1) {
+                                                  sliderMinutes = 0.125;
+                                                  hasEndings = false;
+                                                }
+                                              }
+                                              if (sliderMinutes < 0.55) {
+                                                if (sliderMinutes > 0.45) {
+                                                  sliderMinutes = 0.5;
+                                                }
+                                              }
+                                              if (sliderMinutes < 0.8) {
+                                                if (sliderMinutes > 0.7) {
+                                                  sliderMinutes = 0.75;
+                                                }
+                                              }
+                                            });
+                                          },
+                                        )),
+                                    Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                          (sliderMinutes * 4)
+                                              .toStringAsFixed(2),
+                                          style: GoogleFonts.overpass(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                              fontSize: 60),
+                                        )),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          "lesson${hasEndings ? "'s" : ""}",
+                                          style: GoogleFonts.overpass(
+                                              color: Colors.white,
+                                              fontSize: 20),
+                                        )),
+                                  ],
+                                )),
+                            Expanded(
+                                flex: 1,
+                                child: InkWell(
                                   onTap: () {
                                     setState(() {
                                       showSwitchCard = !showSwitchCard;
@@ -149,26 +216,54 @@ class _MyHomePageState extends State<MyHomePage>
                                     eee();
                                   },
                                   child: Container(
-                                    padding: const EdgeInsets.all(20),
-                                    color: Colors.black,
+                                    padding: const EdgeInsets.all(10),
+                                    color: blackGucci,
+                                    height: double.infinity,
+                                    child: const Icon(Icons.done,
+                                        color: Colors.white, size: 50),
+                                  ),
+                                )),
+                            Container(
+                              color: Colors.white,
+                              height: double.infinity,
+                              width: 1,
+                            ),
+                            Expanded(
+                                flex: 1,
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      showSwitchCard = !showSwitchCard;
+                                    });
+                                    eee();
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(10),
+                                    color: blackGucci,
                                     height: double.infinity,
                                     child: const Icon(Icons.close,
                                         color: Colors.white, size: 50),
-                                  )),
-                            ),
-                            Align(
-                                alignment: Alignment.center,
-                                child: Switch(
-                                    value: true,
-                                    onChanged: (bool value) {
-                                      setState(() {
-                                        value = !value;
-                                      });
-                                    }))
+                                  ),
+                                )),
                           ])))
                 ])),
-            Container(color: Colors.white, width: double.maxFinite, height: 1),
-            button(addLessonTime, 'dodaj lekcje (45 min.)'),
+            Container(color: Colors.white, width: double.maxFinite, height: 3),
+            Expanded(
+                flex: 2,
+                child: GestureDetector(
+                    onTap: addLessonTime,
+                    child: Container(
+                      color: blackGucci,
+                      width: double.infinity,
+                      child: Center(
+                          child: Text(
+                        'Add lesson (45 min.)',
+                        style: GoogleFonts.overpass(
+                            fontSize: 30,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      )),
+                    ))),
             Expanded(
                 flex: 5,
                 child: Column(
@@ -199,21 +294,4 @@ class _MyHomePageState extends State<MyHomePage>
       ),
     );
   }
-
-  Widget button(func, String txt) => Expanded(
-      flex: 2,
-      child: GestureDetector(
-          onTap: func,
-          child: Container(
-            color: blackGucci,
-            width: double.infinity,
-            child: Center(
-                child: Text(
-              txt,
-              style: GoogleFonts.overpass(
-                  fontSize: 30,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold),
-            )),
-          )));
 }
