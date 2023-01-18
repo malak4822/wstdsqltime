@@ -34,8 +34,8 @@ class _MyHomePageState extends State<MyHomePage>
   double counter = 0;
   double inHours = 0;
 
-  double contWidth = 100;
-  bool booli = false;
+  double contWidth = 0;
+  bool showSwitchCard = false;
 
   void loadBool() async {
     var prefs = await SharedPreferences.getInstance();
@@ -62,23 +62,26 @@ class _MyHomePageState extends State<MyHomePage>
     timeInHours();
   }
 
-  void advAdd() {}
-
   void timeInHours() {
     setState(() {
       inHours = counter / 60;
     });
   }
 
-  void eeee() {
+  void eee() {
     setState(() {
-      booli = !booli;
+      if (showSwitchCard) {
+        contWidth = MediaQuery.of(context).size.width;
+      } else {
+        contWidth = 0;
+      }
     });
   }
 
   @override
   void initState() {
     loadBool();
+    timeInHours();
     super.initState();
   }
 
@@ -109,54 +112,61 @@ class _MyHomePageState extends State<MyHomePage>
           children: [
             Expanded(
                 flex: 2,
-                child: Stack(
-                  children: [
-                    Container(color: blackGucci, width: double.maxFinite),
-                    GestureDetector(
-                        onTap: () {
-                          eeee();
-                          advAdd();
-                        },
-                        child: AnimatedContainer(
-                          color: const Color.fromARGB(255, 108, 108, 108),
-                          width: contWidth,
-                          curve: Curves.easeInOutCirc,
-                          duration: const Duration(milliseconds: 400),
-                          child: Center(
-                              child: Switch(
-                            value: true,
-                            onChanged: (bool value) {
-                              setState(() {
-                                value = !value;
-                              });
-                            },
-                          )),
-                        )),
-                    InkWell(
-                      child: Container(
-                        width: 100,
-                        decoration: const BoxDecoration(
-                          color: Colors.red,
-                        ),
-                        child: const Text(
-                          'Next Episode',
-                          style: TextStyle(
-                            color: Colors.black87,
-                          ),
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          if (contWidth == 150) {
-                            contWidth = 50;
-                          } else {
-                            contWidth = 150;
-                          }
-                        });
-                      },
+                child: Stack(children: [
+                  InkWell(
+                    onTap: () {
+                      showSwitchCard = !showSwitchCard;
+                      eee();
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      color: blackGucci,
+                      width: double.maxFinite,
+                      height: double.maxFinite,
+                      child: Text("Add Custom Time",
+                          style: GoogleFonts.overpass(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 30)),
                     ),
-                  ],
-                )),
+                  ),
+                  AnimatedContainer(
+                      color: const Color.fromARGB(255, 108, 108, 108),
+                      width: contWidth,
+                      curve: Curves.easeInOutCirc,
+                      duration: const Duration(milliseconds: 400),
+                      alignment: Alignment.center,
+                      child: Visibility(
+                          visible: showSwitchCard,
+                          child: Stack(children: [
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      showSwitchCard = !showSwitchCard;
+                                    });
+                                    eee();
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(20),
+                                    color: Colors.black,
+                                    height: double.infinity,
+                                    child: const Icon(Icons.close,
+                                        color: Colors.white, size: 50),
+                                  )),
+                            ),
+                            Align(
+                                alignment: Alignment.center,
+                                child: Switch(
+                                    value: true,
+                                    onChanged: (bool value) {
+                                      setState(() {
+                                        value = !value;
+                                      });
+                                    }))
+                          ])))
+                ])),
             Container(color: Colors.white, width: double.maxFinite, height: 1),
             button(addLessonTime, 'dodaj lekcje (45 min.)'),
             Expanded(
