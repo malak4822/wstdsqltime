@@ -74,10 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
     } else {
       animationDouble = MediaQuery.of(context).size.width;
     }
-    Future.delayed(const Duration(milliseconds: 300), () {
-      setState(() {
-        animationCurve = Curves.easeOutQuart;
+    Future.delayed(const Duration(milliseconds: 400), () {
+      animationCurve = Curves.easeInOutQuart;
 
+      setState(() {
         animationDouble = 0;
       });
     });
@@ -187,7 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 )),
             Text(
-              'Equvalent of :',
+              'equivalent :',
               style: GoogleFonts.overpass(
                   fontWeight: FontWeight.bold, color: blackGucci),
             ),
@@ -424,8 +424,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       AnimatedContainer(
                         height: double.infinity,
-                        duration: const Duration(milliseconds: 300),
-                        color: Colors.white,
+                        duration: const Duration(milliseconds: 400),
+                        color: Colors.white54,
                         curve: animationCurve,
                         width: animationDouble,
                       ),
