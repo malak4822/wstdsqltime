@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Your Wasted Time in School'),
     );
   }
 }
@@ -28,49 +29,91 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage>
-    with SingleTickerProviderStateMixin {
-  double counter = 0;
-  double inHours = 0;
+class _MyHomePageState extends State<MyHomePage> {
+  int counter = 0;
+  int inHours = 0;
   double sliderMinutes = 0;
   double contWidth = 0;
   bool showSwitchCard = false;
   double buttOpacity = 0;
   bool hasEndings = true;
+  double hoursadd = 0;
+  double animationDouble = 0;
+  Curve animationCurve = Curves.easeInOutQuint;
+
+  int walkTime = 0;
+  int beerTime = 0;
+  int movieTime = 0;
+
+  void countBeers() {
+    beerTime = (counter / 10).round();
+  }
+
+  void movieTimer() {
+    movieTime = (counter / 90).round();
+  }
+
+  void walkinTime() {
+    walkTime = (counter / 9).round();
+  }
 
   void loadBool() async {
     var prefs = await SharedPreferences.getInstance();
     setState(() {
-      counter = prefs.getDouble('wastedTime') ?? 0;
+      counter = prefs.getInt('wastedTime') ?? 0;
     });
+    countBeers();
+    movieTimer();
+    walkinTime();
     timeInHours();
+  }
+
+  void animatedContainer() async {
+    if (animationDouble == MediaQuery.of(context).size.width) {
+      animationDouble = 0;
+    } else {
+      animationDouble = MediaQuery.of(context).size.width;
+    }
+    Future.delayed(const Duration(milliseconds: 300), () {
+      setState(() {
+        animationCurve = Curves.easeOutQuart;
+
+        animationDouble = 0;
+      });
+    });
   }
 
   void resetCounter() async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setDouble('wastedTime', 0);
+    prefs.setInt('wastedTime', 0);
     setState(() {
       counter = 0;
     });
+    countBeers();
+    movieTimer();
+    walkinTime();
     timeInHours();
   }
 
   void addLessonTime() async {
     var prefs = await SharedPreferences.getInstance();
     setState(() {
-      counter = counter + 45.00;
+      counter = counter + 45;
     });
-    prefs.setDouble('wastedTime', counter);
+    prefs.setInt('wastedTime', counter);
     timeInHours();
+    countBeers();
+    movieTimer();
+    walkinTime();
   }
 
   void timeInHours() {
     setState(() {
-      inHours = counter / 60;
+      inHours = (counter.roundToDouble() / 60).round();
     });
   }
 
-  void eee() {
+  void hideNShowCustomTime() {
     setState(() {
       if (showSwitchCard) {
         contWidth = MediaQuery.of(context).size.width;
@@ -108,31 +151,122 @@ class _MyHomePageState extends State<MyHomePage>
         ]),
       ),
       appBar: AppBar(
+        centerTitle: true,
         backgroundColor: blackGucci,
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: GoogleFonts.overpass(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Center(
         child: Column(
           children: [
+            Expanded(
+                flex: 5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'You wasted :',
+                      style: GoogleFonts.overpass(fontSize: 25),
+                    ),
+                    Text(
+                      '$counter mins',
+                      style: GoogleFonts.overpass(
+                          fontWeight: FontWeight.bold, fontSize: 40),
+                    ),
+                    Text(
+                      "and that's",
+                      style: GoogleFonts.overpass(fontSize: 25),
+                    ),
+                    Text(
+                      "$inHours hours",
+                      style: GoogleFonts.overpass(
+                          fontSize: 40, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                )),
+            Text(
+              'Equvalent of :',
+              style: GoogleFonts.overpass(
+                  fontWeight: FontWeight.bold, color: blackGucci),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    kolumna(
+                        walkTime, 'kilometres', Icons.nordic_walking_rounded),
+                    Container(
+                        width: 110,
+                        height: 110,
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: blackGucci,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              beerTime.toString(),
+                              style: GoogleFonts.overpass(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                  color: Colors.white),
+                            ),
+                            const Spacer(),
+                            const FaIcon(
+                              FontAwesomeIcons.beerMugEmpty,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                            Text(
+                              'beers',
+                              style: GoogleFonts.overpass(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                  color: Colors.white),
+                            )
+                          ],
+                        )),
+                    kolumna(movieTime, 'movies', Icons.movie_creation),
+                  ],
+                )),
+            const Spacer(),
             Expanded(
                 flex: 2,
                 child: Stack(children: [
                   InkWell(
                     onTap: () {
                       showSwitchCard = !showSwitchCard;
-                      eee();
+                      hideNShowCustomTime();
+                      countBeers();
+                      movieTimer();
+                      walkinTime();
                     },
                     child: Container(
-                      alignment: Alignment.center,
-                      color: blackGucci,
-                      width: double.maxFinite,
-                      height: double.maxFinite,
-                      child: Text("Add Custom Time",
-                          style: GoogleFonts.overpass(
+                        alignment: Alignment.center,
+                        color: blackGucci,
+                        width: double.maxFinite,
+                        height: double.maxFinite,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.add_circle,
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30)),
-                    ),
+                              size: 50,
+                            ),
+                            Text("custom Time",
+                                style: GoogleFonts.overpass(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20)),
+                          ],
+                        )),
                   ),
                   AnimatedContainer(
                       color: const Color.fromARGB(255, 108, 108, 108),
@@ -184,6 +318,7 @@ class _MyHomePageState extends State<MyHomePage>
                                                 }
                                               }
                                             });
+                                            hoursadd = sliderMinutes;
                                           },
                                         )),
                                     Expanded(
@@ -194,10 +329,10 @@ class _MyHomePageState extends State<MyHomePage>
                                           style: GoogleFonts.overpass(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white,
-                                              fontSize: 60),
+                                              fontSize: 50),
                                         )),
                                     Expanded(
-                                        flex: 1,
+                                        flex: 2,
                                         child: Text(
                                           "lesson${hasEndings ? "'s" : ""}",
                                           style: GoogleFonts.overpass(
@@ -212,8 +347,15 @@ class _MyHomePageState extends State<MyHomePage>
                                   onTap: () {
                                     setState(() {
                                       showSwitchCard = !showSwitchCard;
+                                      counter =
+                                          (hoursadd * 180).round() + counter;
                                     });
-                                    eee();
+                                    hideNShowCustomTime();
+
+                                    countBeers();
+                                    movieTimer();
+                                    walkinTime();
+                                    timeInHours();
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
@@ -235,7 +377,7 @@ class _MyHomePageState extends State<MyHomePage>
                                     setState(() {
                                       showSwitchCard = !showSwitchCard;
                                     });
-                                    eee();
+                                    hideNShowCustomTime();
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.all(10),
@@ -247,51 +389,80 @@ class _MyHomePageState extends State<MyHomePage>
                                 )),
                           ])))
                 ])),
-            Container(color: Colors.white, width: double.maxFinite, height: 3),
+            Container(color: Colors.white, width: double.infinity, height: 1),
             Expanded(
                 flex: 2,
                 child: GestureDetector(
-                    onTap: addLessonTime,
-                    child: Container(
-                      color: blackGucci,
-                      width: double.infinity,
-                      child: Center(
-                          child: Text(
-                        'Add lesson (45 min.)',
-                        style: GoogleFonts.overpass(
-                            fontSize: 30,
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold),
-                      )),
-                    ))),
-            Expanded(
-                flex: 5,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'You wasted :',
-                      style: GoogleFonts.overpass(fontSize: 25),
-                    ),
-                    Text(
-                      '$counter mins',
-                      style: GoogleFonts.overpass(
-                          fontWeight: FontWeight.bold, fontSize: 40),
-                    ),
-                    Text(
-                      "and that's",
-                      style: GoogleFonts.overpass(fontSize: 25),
-                    ),
-                    Text(
-                      "$inHours hours",
-                      style: GoogleFonts.overpass(
-                          fontSize: 40, fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ))
+                    onTap: () {
+                      setState(() {
+                        animatedContainer();
+                      });
+                      addLessonTime();
+                    },
+                    child: Stack(children: [
+                      Container(
+                        color: blackGucci,
+                        width: double.infinity,
+                        child: Center(
+                            child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(
+                              Icons.add_circle,
+                              color: Colors.white,
+                              size: 50,
+                            ),
+                            Text(
+                              '45 minutes lesson ',
+                              style: GoogleFonts.overpass(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        )),
+                      ),
+                      AnimatedContainer(
+                        height: double.infinity,
+                        duration: const Duration(milliseconds: 300),
+                        color: Colors.white,
+                        curve: animationCurve,
+                        width: animationDouble,
+                      ),
+                    ]))),
           ],
         ),
       ),
     );
   }
+
+  Widget kolumna(time, String txt, IconData ikonka) => Container(
+      width: 110,
+      height: 110,
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: blackGucci,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            time.toString(),
+            style: GoogleFonts.overpass(
+                fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
+          ),
+          const Spacer(),
+          Icon(
+            ikonka,
+            color: Colors.white,
+            size: 30,
+          ),
+          Text(
+            txt,
+            style: GoogleFonts.overpass(
+                fontWeight: FontWeight.bold, fontSize: 13, color: Colors.white),
+          )
+        ],
+      ));
 }
