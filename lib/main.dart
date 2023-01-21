@@ -32,14 +32,16 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int counter = 0;
   int inHours = 0;
-  double sliderMinutes = 0;
   double contWidth = 0;
   bool showSwitchCard = false;
   double buttOpacity = 0;
   bool hasEndings = true;
-  double hoursadd = 0;
+  bool hasOurEnding = true;
   double animationDouble = 0;
   Curve animationCurve = Curves.easeInOutQuint;
+
+  double sliderMinutes = 0;
+  double substractSliderVal = 0;
 
   int walkTime = 0;
   int beerTime = 0;
@@ -80,6 +82,16 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         animationDouble = 0;
       });
+    });
+  }
+
+  void hourEnding() {
+    setState(() {
+      if (inHours == 1) {
+        hasOurEnding = true;
+      } else {
+        hasOurEnding = false;
+      }
     });
   }
 
@@ -136,13 +148,77 @@ class _MyHomePageState extends State<MyHomePage> {
       drawer: Drawer(
         backgroundColor: blackGucci,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Slider(
+            activeColor: Colors.white,
+            thumbColor: Colors.black,
+            inactiveColor: Colors.white30,
+            value: substractSliderVal,
+            onChanged: (double value) {
+              setState(() {
+                substractSliderVal = value;
+
+                if (substractSliderVal < 0.3) {
+                  if (substractSliderVal > 0.2) {
+                    substractSliderVal = 0.25;
+                  }
+                }
+                if (substractSliderVal < 0.15) {
+                  if (substractSliderVal > 0.1) {
+                    substractSliderVal = 0.125;
+                  }
+                }
+                if (substractSliderVal < 0.55) {
+                  if (substractSliderVal > 0.45) {
+                    substractSliderVal = 0.5;
+                  }
+                }
+                if (substractSliderVal < 0.8) {
+                  if (substractSliderVal > 0.7) {
+                    substractSliderVal = 0.75;
+                  }
+                }
+              });
+            },
+          ),
+          Text(
+            '${(substractSliderVal * 4).toStringAsFixed(2)} lessons',
+            style: GoogleFonts.overpass(
+                fontWeight: FontWeight.bold, fontSize: 45, color: Colors.white),
+          ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+              ),
+              onPressed: () {
+                setState(() {
+                  counter = counter - (substractSliderVal * 180).round();
+                  if (counter <= 0) {
+                    counter = 0;
+                  }
+                });
+                movieTimer();
+                countBeers();
+                walkinTime();
+                timeInHours();
+                hourEnding();
+                Navigator.pop(context);
+              },
+              child: Text("Substract Time",
+                  style: GoogleFonts.overpass(
+                      color: blackGucci,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25))),
+          const SizedBox(height: 50),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
                 shape: const CircleBorder(),
                 padding: const EdgeInsets.all(70),
               ),
-              onPressed: resetCounter,
+              onPressed: () {
+                resetCounter();
+                Navigator.pop(context);
+              },
               child: Text("Reset time",
                   style: GoogleFonts.overpass(
                       color: blackGucci,
@@ -180,9 +256,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: GoogleFonts.overpass(fontSize: 25),
                     ),
                     Text(
-                      "$inHours hours",
+                      "$inHours hour${hasOurEnding ? "" : "s"}",
                       style: GoogleFonts.overpass(
-                          fontSize: 40, fontWeight: FontWeight.bold),
+                          fontSize: 50, fontWeight: FontWeight.bold),
                     ),
                   ],
                 )),
@@ -202,7 +278,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Container(
                         width: 110,
                         height: 110,
-                        padding: const EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: blackGucci,
@@ -221,7 +297,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             const FaIcon(
                               FontAwesomeIcons.beerMugEmpty,
                               color: Colors.white,
-                              size: 30,
+                              size: 35,
                             ),
                             Text(
                               'beers',
@@ -318,7 +394,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                                 }
                                               }
                                             });
-                                            hoursadd = sliderMinutes;
                                           },
                                         )),
                                     Expanded(
@@ -347,8 +422,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   onTap: () {
                                     setState(() {
                                       showSwitchCard = !showSwitchCard;
-                                      counter =
-                                          (hoursadd * 180).round() + counter;
+                                      counter = (sliderMinutes * 180).round() +
+                                          counter;
                                     });
                                     hideNShowCustomTime();
 
@@ -398,6 +473,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         animatedContainer();
                       });
                       addLessonTime();
+                      hourEnding();
                     },
                     child: Stack(children: [
                       Container(
@@ -439,7 +515,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget kolumna(time, String txt, IconData ikonka) => Container(
       width: 110,
       height: 110,
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
         color: blackGucci,
@@ -456,7 +532,7 @@ class _MyHomePageState extends State<MyHomePage> {
           Icon(
             ikonka,
             color: Colors.white,
-            size: 30,
+            size: 35,
           ),
           Text(
             txt,
