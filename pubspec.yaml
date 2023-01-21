@@ -39,6 +39,11 @@ dependencies:
   shared_preferences: ^2.0.16
   google_fonts: ^3.0.1
   font_awesome_flutter: ^10.3.0
+  flutter_launcher_icons: ^0.11.0
+
+flutter_icons:
+  image_path: "img/appicon.png"
+  android: true
 
 dev_dependencies:
   flutter_test:
@@ -63,8 +68,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - img/appicon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
