@@ -1,4 +1,4 @@
-name: wstdsqltime
+name: wastedtimeinschool
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -40,6 +40,11 @@ dependencies:
   google_fonts: ^3.0.1
   font_awesome_flutter: ^10.3.0
   flutter_launcher_icons: ^0.11.0
+  flutter_native_splash: ^2.2.16
+
+flutter_native_splash:
+  image: "img/appicon512x512_no_background.png"
+  color: "#282828"
 
 flutter_icons:
   image_path: "img/appicon.png"
