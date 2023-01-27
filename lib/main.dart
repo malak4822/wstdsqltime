@@ -327,7 +327,6 @@ class _MyHomePageState extends State<MyHomePage> {
                         alignment: Alignment.center,
                         color: blackGucci,
                         width: double.maxFinite,
-                        height: double.maxFinite,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -426,7 +425,6 @@ class _MyHomePageState extends State<MyHomePage> {
                                           counter;
                                     });
                                     hideNShowCustomTime();
-
                                     countBeers();
                                     movieTimer();
                                     walkinTime();
@@ -477,9 +475,8 @@ class _MyHomePageState extends State<MyHomePage> {
                     },
                     child: Stack(children: [
                       Container(
-                        color: blackGucci,
-                        width: double.infinity,
-                        child: Center(
+                    color: blackGucci,
+                    child: Center(
                             child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -496,8 +493,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                   fontWeight: FontWeight.bold),
                             )
                           ],
-                        )),
-                      ),
+                        )),)
+   ,
                       AnimatedContainer(
                         height: double.infinity,
                         duration: const Duration(milliseconds: 400),
@@ -514,10 +511,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget kolumna(time, String txt, IconData ikonka) => Container(
       width: 110,
-      height: 110,
       padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(20),
         color: blackGucci,
       ),
       child: Column(
