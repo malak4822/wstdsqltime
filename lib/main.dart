@@ -234,277 +234,240 @@ class _MyHomePageState extends State<MyHomePage> {
           style: GoogleFonts.overpass(fontWeight: FontWeight.bold),
         ),
       ),
+      // EKRAN GŁÓWNY EKRAN GŁÓWNY EKRAN GŁÓWNY EKRAN GŁÓWNY EKRAN GŁÓWNY
       body: Center(
-        child: Column(
-          children: [
-            Expanded(
-                flex: 5,
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text(
+            'You wasted :',
+            style: GoogleFonts.overpass(fontSize: 25),
+          ),
+          Text(
+            '$counter mins',
+            style:
+                GoogleFonts.overpass(fontWeight: FontWeight.bold, fontSize: 40),
+          ),
+          Text(
+            "and that's",
+            style: GoogleFonts.overpass(fontSize: 25),
+          ),
+          Text(
+            "$inHours hour${hasOurEnding ? "" : "s"}",
+            style:
+                GoogleFonts.overpass(fontSize: 50, fontWeight: FontWeight.bold),
+          ),
+          Text(
+            'equivalent :',
+            style: GoogleFonts.overpass(
+                fontWeight: FontWeight.bold, color: blackGucci),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              kolumna(walkTime, 'kilometres', Icons.nordic_walking_rounded),
+              Container(
+                width: 110,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: blackGucci,
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      beerTime.toString(),
+                      style: GoogleFonts.overpass(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 30,
+                          color: Colors.white),
+                    ),
+                    const FaIcon(
+                      FontAwesomeIcons.beerMugEmpty,
+                      color: Colors.white,
+                      size: 35,
+                    ),
+                    Text(
+                      'beers',
+                      style: GoogleFonts.overpass(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+              ),
+              kolumna(movieTime, 'movies', Icons.movie_creation),
+            ],
+          ),
+          InkWell(
+            onTap: () {
+              showSwitchCard = !showSwitchCard;
+              hideNShowCustomTime();
+              countBeers();
+              movieTimer();
+              walkinTime();
+            },
+            child: Container(
+                alignment: Alignment.center,
+                color: blackGucci,
+                width: double.maxFinite,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      'You wasted :',
-                      style: GoogleFonts.overpass(fontSize: 25),
+                    const Icon(
+                      Icons.add_circle,
+                      color: Colors.white,
+                      size: 50,
                     ),
-                    Text(
-                      '$counter mins',
-                      style: GoogleFonts.overpass(
-                          fontWeight: FontWeight.bold, fontSize: 40),
-                    ),
-                    Text(
-                      "and that's",
-                      style: GoogleFonts.overpass(fontSize: 25),
-                    ),
-                    Text(
-                      "$inHours hour${hasOurEnding ? "" : "s"}",
-                      style: GoogleFonts.overpass(
-                          fontSize: 50, fontWeight: FontWeight.bold),
-                    ),
+                    Text("custom Time",
+                        style: GoogleFonts.overpass(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20)),
                   ],
                 )),
-            Text(
-              'equivalent :',
-              style: GoogleFonts.overpass(
-                  fontWeight: FontWeight.bold, color: blackGucci),
-            ),
-            const SizedBox(height: 10),
-            Expanded(
-                flex: 2,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    kolumna(
-                        walkTime, 'kilometres', Icons.nordic_walking_rounded),
-                    Container(
-                        width: 110,
-                        height: 110,
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: blackGucci,
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              beerTime.toString(),
-                              style: GoogleFonts.overpass(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
-                                  color: Colors.white),
-                            ),
-                            const Spacer(),
-                            const FaIcon(
-                              FontAwesomeIcons.beerMugEmpty,
-                              color: Colors.white,
-                              size: 35,
-                            ),
-                            Text(
-                              'beers',
-                              style: GoogleFonts.overpass(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: Colors.white),
-                            )
-                          ],
-                        )),
-                    kolumna(movieTime, 'movies', Icons.movie_creation),
-                  ],
-                )),
-            const Spacer(),
-            Expanded(
-                flex: 2,
-                child: Stack(children: [
-                  InkWell(
-                    onTap: () {
-                      showSwitchCard = !showSwitchCard;
-                      hideNShowCustomTime();
-                      countBeers();
-                      movieTimer();
-                      walkinTime();
-                    },
-                    child: Container(
-                        alignment: Alignment.center,
-                        color: blackGucci,
-                        width: double.maxFinite,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.add_circle,
-                              color: Colors.white,
-                              size: 50,
-                            ),
-                            Text("custom Time",
-                                style: GoogleFonts.overpass(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20)),
-                          ],
-                        )),
-                  ),
-                  AnimatedContainer(
-                      color: const Color.fromARGB(255, 108, 108, 108),
-                      width: contWidth,
-                      curve: Curves.easeInOutCirc,
-                      duration: const Duration(milliseconds: 400),
-                      alignment: Alignment.center,
-                      child: AnimatedOpacity(
-                          curve: Curves.easeInOutCirc,
-                          opacity: showSwitchCard ? 1 : buttOpacity,
-                          duration: const Duration(milliseconds: 400),
-                          child: Row(children: [
-                            Expanded(
-                                flex: 3,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                        flex: 2,
-                                        child: Slider(
-                                          activeColor: Colors.white,
-                                          thumbColor: Colors.black,
-                                          inactiveColor: Colors.white30,
-                                          value: sliderMinutes,
-                                          onChanged: (double value) {
-                                            setState(() {
-                                              sliderMinutes = value;
-                                              hasEndings = true;
-                                              if (sliderMinutes < 0.3) {
-                                                if (sliderMinutes > 0.2) {
-                                                  hasEndings = false;
-                                                  sliderMinutes = 0.25;
-                                                }
-                                              }
-                                              if (sliderMinutes < 0.15) {
-                                                if (sliderMinutes > 0.1) {
-                                                  sliderMinutes = 0.125;
-                                                  hasEndings = false;
-                                                }
-                                              }
-                                              if (sliderMinutes < 0.55) {
-                                                if (sliderMinutes > 0.45) {
-                                                  sliderMinutes = 0.5;
-                                                }
-                                              }
-                                              if (sliderMinutes < 0.8) {
-                                                if (sliderMinutes > 0.7) {
-                                                  sliderMinutes = 0.75;
-                                                }
-                                              }
-                                            });
-                                          },
-                                        )),
-                                    Expanded(
-                                        flex: 3,
-                                        child: Text(
-                                          (sliderMinutes * 4)
-                                              .toStringAsFixed(2),
-                                          style: GoogleFonts.overpass(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.white,
-                                              fontSize: 50),
-                                        )),
-                                    Expanded(
-                                        flex: 2,
-                                        child: Text(
-                                          "lesson${hasEndings ? "'s" : ""}",
-                                          style: GoogleFonts.overpass(
-                                              color: Colors.white,
-                                              fontSize: 20),
-                                        )),
-                                  ],
-                                )),
-                            Expanded(
-                                flex: 1,
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      showSwitchCard = !showSwitchCard;
-                                      counter = (sliderMinutes * 180).round() +
-                                          counter;
-                                    });
-                                    hideNShowCustomTime();
-                                    countBeers();
-                                    movieTimer();
-                                    walkinTime();
-                                    timeInHours();
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    color: blackGucci,
-                                    height: double.infinity,
-                                    child: const Icon(Icons.done,
-                                        color: Colors.white, size: 50),
-                                  ),
-                                )),
-                            Container(
-                              color: Colors.white,
-                              height: double.infinity,
-                              width: 1,
-                            ),
-                            Expanded(
-                                flex: 1,
-                                child: InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      showSwitchCard = !showSwitchCard;
-                                    });
-                                    hideNShowCustomTime();
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.all(10),
-                                    color: blackGucci,
-                                    height: double.infinity,
-                                    child: const Icon(Icons.close,
-                                        color: Colors.white, size: 50),
-                                  ),
-                                )),
-                          ])))
-                ])),
-            Container(color: Colors.white, width: double.infinity, height: 1),
-            Expanded(
-                flex: 2,
-                child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        animatedContainer();
-                      });
-                      addLessonTime();
-                      hourEnding();
-                    },
-                    child: Stack(children: [
-                      Container(
-                    color: blackGucci,
-                    child: Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                              Icons.add_circle,
-                              color: Colors.white,
-                              size: 50,
-                            ),
-                            Text(
-                              '45 minutes lesson ',
-                              style: GoogleFonts.overpass(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        )),)
-   ,
-                      AnimatedContainer(
-                        height: double.infinity,
-                        duration: const Duration(milliseconds: 400),
-                        color: Colors.white54,
-                        curve: animationCurve,
-                        width: animationDouble,
-                      ),
-                    ]))),
-          ],
-        ),
+          ),
+          // AnimatedContainer(
+          //     color: const Color.fromARGB(255, 108, 108, 108),
+          //     width: contWidth,
+          //     curve: Curves.easeInOutCirc,
+          //     duration: const Duration(milliseconds: 400),
+          //     alignment: Alignment.center,
+          //     child: AnimatedOpacity(
+          //         curve: Curves.easeInOutCirc,
+          //         opacity: showSwitchCard ? 1 : buttOpacity,
+          //         duration: const Duration(milliseconds: 400),
+          //         child: Row(children: [
+          //           Column(
+          //             mainAxisAlignment: MainAxisAlignment.center,
+          //             children: [
+          //               Slider(
+          //                 activeColor: Colors.white,
+          //                 thumbColor: Colors.black,
+          //                 inactiveColor: Colors.white30,
+          //                 value: sliderMinutes,
+          //                 onChanged: (double value) {
+          //                   setState(() {
+          //                     sliderMinutes = value;
+          //                     hasEndings = true;
+          //                     if (sliderMinutes < 0.3) {
+          //                       if (sliderMinutes > 0.2) {
+          //                         hasEndings = false;
+          //                         sliderMinutes = 0.25;
+          //                       }
+          //                     }
+          //                     if (sliderMinutes < 0.15) {
+          //                       if (sliderMinutes > 0.1) {
+          //                         sliderMinutes = 0.125;
+          //                         hasEndings = false;
+          //                       }
+          //                     }
+          //                     if (sliderMinutes < 0.55) {
+          //                       if (sliderMinutes > 0.45) {
+          //                         sliderMinutes = 0.5;
+          //                       }
+          //                     }
+          //                     if (sliderMinutes < 0.8) {
+          //                       if (sliderMinutes > 0.7) {
+          //                         sliderMinutes = 0.75;
+          //                       }
+          //                     }
+          //                   });
+          //                 },
+          //               ),
+          //               Text(
+          //                 (sliderMinutes * 4).toStringAsFixed(2),
+          //                 style: GoogleFonts.overpass(
+          //                     fontWeight: FontWeight.bold,
+          //                     color: Colors.white,
+          //                     fontSize: 50),
+          //               ),
+          //               Text(
+          //                 "lesson${hasEndings ? "'s" : ""}",
+          //                 style: GoogleFonts.overpass(
+          //                     color: Colors.white, fontSize: 20),
+          //               ),
+          //             ],
+          //           ),
+          //           InkWell(
+          //             onTap: () {
+          //               setState(() {
+          //                 showSwitchCard = !showSwitchCard;
+          //                 counter = (sliderMinutes * 180).round() + counter;
+          //               });
+          //               hideNShowCustomTime();
+          //               countBeers();
+          //               movieTimer();
+          //               walkinTime();
+          //               timeInHours();
+          //             },
+          //             child: Container(
+          //               padding: const EdgeInsets.all(10),
+          //               color: blackGucci,
+          //               height: double.infinity,
+          //               child: const Icon(Icons.done,
+          //                   color: Colors.white, size: 50),
+          //             ),
+          //           ),
+          //           Container(
+          //             color: Colors.white,
+          //             height: double.infinity,
+          //             width: 1,
+          //           ),
+          //           InkWell(
+          //               onTap: () {
+          //                 setState(() {
+          //                   showSwitchCard = !showSwitchCard;
+          //                 });
+          //                 hideNShowCustomTime();
+          //               },
+          //               child: Container(
+          //                 padding: const EdgeInsets.all(10),
+          //                 color: blackGucci,
+          //                 height: double.infinity,
+          //                 child: const Icon(Icons.close,
+          //                     color: Colors.white, size: 50),
+          //               ))
+          //         ])))
+        ]),
+        // Container(color: Colors.white, width: double.infinity, height: 1),
+        // GestureDetector(
+        //     onTap: () {
+        //       setState(() {
+        //         animatedContainer();
+        //       });
+        //       addLessonTime();
+        //       hourEnding();
+        //     },
+        //     child: Stack(children: [
+        //       Container(
+        //         color: blackGucci,
+        //         child: Center(
+        //             child: Column(
+        //           mainAxisAlignment: MainAxisAlignment.center,
+        //           children: [
+        //             const Icon(
+        //               Icons.add_circle,
+        //               color: Colors.white,
+        //               size: 50,
+        //             ),
+        //             Text(
+        //               '45 minutes lesson ',
+        //               style: GoogleFonts.overpass(
+        //                   fontSize: 20,
+        //                   color: Colors.white,
+        //                   fontWeight: FontWeight.bold),
+        //             )
+        //           ],
+        //         )),
+        //       ),
+        //       AnimatedContainer(
+        //         height: double.infinity,
+        //         duration: const Duration(milliseconds: 400),
+        //         color: Colors.white54,
+        //         curve: animationCurve,
+        //         width: animationDouble,
+        //       ),
+        //     ])),
       ),
     );
   }
@@ -524,7 +487,6 @@ class _MyHomePageState extends State<MyHomePage> {
             style: GoogleFonts.overpass(
                 fontWeight: FontWeight.bold, fontSize: 30, color: Colors.white),
           ),
-          const Spacer(),
           Icon(
             ikonka,
             color: Colors.white,
