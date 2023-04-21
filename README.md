@@ -10,4 +10,5 @@ App is used to count your valuable time wasted in school, hence the name "Your W
 
 link to app: https://play.google.com/console/u/1/developers/8356051579506566739/app-list?pli=1
 
-##Bug Notes
+## Bug Report
+If you will see some pointless lines or bugs, please contact me on email: kmalak4822@gmail.com
