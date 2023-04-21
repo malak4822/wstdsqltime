@@ -1,16 +1,13 @@
 # wstdsqltime
 
-A new Flutter project.
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
+## What is it?
+Flutter&Dart mobile application
 
-A few resources to get you started if this is your first Flutter project:
+This app was was made to check if developer is able to put it into Google Play 
+App is used to count your valuable time wasted in school, hence the name "Your Wasted Time in School"
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+link to app: https://play.google.com/console/u/1/developers/8356051579506566739/app-list?pli=1
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+##Bug Notes
