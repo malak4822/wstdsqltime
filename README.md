@@ -3,7 +3,7 @@
 ## Description
 Your Wasted Time in School is a mobile application built with Flutter and Dart in just a few days. It was developed to track and analyze the time spent in school. The primary objective of this app was to evaluate the developer's capability to publish an app on Google Play.
 
-###App Google Play Link -> [Gplay](https://play.google.com/store/apps/details?id=wastedsqltime.beta&hl=en&gl=US)
+### App Google Play Link -> [Gplay](https://play.google.com/store/apps/details?id=wastedsqltime.beta&hl=en&gl=US)
 
 ## Used To Do App
 - Shared Preferences
