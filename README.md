@@ -6,8 +6,6 @@ Your Wasted Time in School is a mobile application built with Flutter and Dart i
 
 ### <img src='https://cdn-icons-png.flaticon.com/512/732/732208.png' width='24'> [Time Wasted In School](https://play.google.com/store/apps/details?id=wastedsqltime.beta&hl=en&gl=US)
 
-
-
 ## Used To Do App
 - Shared Preferences
 
